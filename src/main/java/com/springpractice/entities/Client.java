@@ -2,10 +2,13 @@ package com.springpractice.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "client")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Client extends BaseEntity {
     private String name;
     private String email;

@@ -1,12 +1,12 @@
 package com.springpractice.repositories;
 
-import com.springpractice.entities.Client;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface ClientRepository extends JpaRepository<Client, Integer> {
-    List<Client> findAllByName (String name);
+import com.springpractice.entities.Client;
+
+public interface ClientRepository {
+    Optional <Client> findById (int id);
+    void create (Client client);
+    List <Client> findAllByName (Client name);
 }

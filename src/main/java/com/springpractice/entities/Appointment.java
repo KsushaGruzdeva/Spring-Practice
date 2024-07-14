@@ -1,12 +1,20 @@
 package com.springpractice.entities;
 
-import jakarta.persistence.*;
-
 import java.sql.Time;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 @Entity
 @Table (name = "appointment")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Appointment extends BaseEntity {
     private Date date;
     private Time time;
@@ -56,7 +64,7 @@ public class Appointment extends BaseEntity {
         return employeeServices;
     }
 
-    public void EmployeeServices (EmployeeServices employeeServices) {
+    public void setEmployeeServices (EmployeeServices employeeServices) {
         this.employeeServices = employeeServices;
     }
 }

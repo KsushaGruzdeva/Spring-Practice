@@ -1,9 +1,16 @@
 package com.springpractice.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "employee_services")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class EmployeeServices extends BaseEntity {
     private Employee employee;
     private Service service;
