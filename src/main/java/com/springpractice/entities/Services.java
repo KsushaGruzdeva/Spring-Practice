@@ -9,13 +9,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table (name = "service")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Service extends BaseEntity {
+public class Services extends BaseEntity {
     private String name;
     private int price;
 
-    protected Service() {}
+    protected Services() {}
 
-    public Service (String name, int price) {
+    public Services (String name, int price) {
         this.name = name;
         this.price = price;
     }

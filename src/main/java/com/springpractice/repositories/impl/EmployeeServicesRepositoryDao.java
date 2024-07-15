@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.springpractice.entities.Employee;
 import com.springpractice.entities.EmployeeServices;
-import com.springpractice.entities.Service;
+import com.springpractice.entities.Services;
 
 @Repository
 public class EmployeeServicesRepositoryDao implements com.springpractice.repositories.EmployeeServicesRepository{
@@ -29,12 +29,12 @@ public class EmployeeServicesRepositoryDao implements com.springpractice.reposit
     }
 
     @Override
-    public List<Service> findAllServiceByEmployeeId (Employee id) {
+    public List<Services> findAllServiceByEmployeeId (Employee id) {
         return baseRepository.findAllServiceByEmployeeId(id);
     }
 
     @Override
-    public List<Employee> findAllEmployeeByServiceId (Service id) {
+    public List<Employee> findAllEmployeeByServiceId (Services id) {
         return baseRepository.findAllEmployeeByServiceId(id);
     }
 }
@@ -42,8 +42,8 @@ public class EmployeeServicesRepositoryDao implements com.springpractice.reposit
 @Repository
 interface BaseEmployeeServicesRepository extends JpaRepository <EmployeeServices, Integer> {
     @Query(value = "select es.service from EmployeeServices es join es.employee e where e.id = :id")
-    List<Service> findAllServiceByEmployeeId (@Param(value = "id") Employee id);
+    List<Services> findAllServiceByEmployeeId (@Param(value = "id") Employee id);
 
     @Query(value = "select es.employee from EmployeeServices es join es.service s where s.id = :id")
-    List<Employee> findAllEmployeeByServiceId (@Param(value = "id") Service id);
+    List<Employee> findAllEmployeeByServiceId (@Param(value = "id") Services id);
 }

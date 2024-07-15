@@ -11,7 +11,7 @@ import com.springpractice.repositories.EmployeeRepository;
 import com.springpractice.services.EmployeeService;
 
 @Service
-public class EmployeeDomainServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 

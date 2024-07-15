@@ -13,11 +13,11 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class EmployeeServices extends BaseEntity {
     private Employee employee;
-    private Service service;
+    private Services service;
 
     protected EmployeeServices() {}
 
-    public EmployeeServices (Employee employee, Service service) {
+    public EmployeeServices (Employee employee, Services service) {
         this.employee = employee;
         this.service = service;
     }
@@ -34,11 +34,11 @@ public class EmployeeServices extends BaseEntity {
 
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (name = "service_id", referencedColumnName = "id")
-    public Service getService() {
+    public Services getService() {
         return service;
     }
 
-    public void setService (Service service) {
+    public void setService (Services service) {
         this.service = service;
     }
 }

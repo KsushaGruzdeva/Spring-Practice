@@ -1,6 +1,5 @@
 package com.springpractice.entities;
 
-import java.sql.Time;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -17,13 +16,13 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Appointment extends BaseEntity {
     private Date date;
-    private Time time;
+    private long time;
     private Client client;
     private EmployeeServices employeeServices;
 
     protected Appointment() {}
 
-    public Appointment (Date date, Time time, Client client, EmployeeServices employeeServices) {
+    public Appointment (Date date, long time, Client client, EmployeeServices employeeServices) {
         this.date = date;
         this.time = time;
         this.client = client;
@@ -40,11 +39,11 @@ public class Appointment extends BaseEntity {
     }
 
     @Column (name = "time")
-    public Time getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime (Time time) {
+    public void setTime (long time) {
         this.time = time;
     }
 
