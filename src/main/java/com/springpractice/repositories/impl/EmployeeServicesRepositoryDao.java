@@ -24,26 +24,39 @@ public class EmployeeServicesRepositoryDao implements com.springpractice.reposit
     }
 
     @Override
-    public void create (EmployeeServices employeeServices) {
-        baseRepository.save(employeeServices);
+    public EmployeeServices create (EmployeeServices employeeServices) {
+        return baseRepository.save(employeeServices);
     }
 
     @Override
-    public List<Services> findAllServiceByEmployeeId (Employee id) {
+    public List<Services> findAllServiceByEmployeeId (int id) {
         return baseRepository.findAllServiceByEmployeeId(id);
     }
 
     @Override
-    public List<Employee> findAllEmployeeByServiceId (Services id) {
+    public List<Employee> findAllEmployeeByServiceId (int id) {
         return baseRepository.findAllEmployeeByServiceId(id);
+    }
+
+    @Override
+    public List<EmployeeServices> findAllByServiceId (int id) {
+        return baseRepository.findAllByServiceId(id);
+    }
+
+    @Override
+    public List <EmployeeServices> findAll () {
+        return baseRepository.findAll();
     }
 }
 
 @Repository
 interface BaseEmployeeServicesRepository extends JpaRepository <EmployeeServices, Integer> {
     @Query(value = "select es.service from EmployeeServices es join es.employee e where e.id = :id")
-    List<Services> findAllServiceByEmployeeId (@Param(value = "id") Employee id);
+    List<Services> findAllServiceByEmployeeId (@Param(value = "id") int id);
 
     @Query(value = "select es.employee from EmployeeServices es join es.service s where s.id = :id")
-    List<Employee> findAllEmployeeByServiceId (@Param(value = "id") Services id);
+    List<Employee> findAllEmployeeByServiceId (@Param(value = "id") int id);
+
+    @Query(value = "select es from EmployeeServices es join es.service s where s.id = :id")
+    List<EmployeeServices> findAllByServiceId (@Param(value = "id") int id);
 }

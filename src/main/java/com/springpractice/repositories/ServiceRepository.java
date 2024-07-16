@@ -7,6 +7,8 @@ import com.springpractice.entities.Services;
 
 public interface ServiceRepository {
     Optional <Services> findById (int id);
-    void create (Services service);
+    Services create (Services service);
     List <Services> findByName (String name);
+    List <Services> findAll ();
+
 }

@@ -23,18 +23,23 @@ public class ClientRepositoryDao implements ClientRepository{
     }
 
     @Override
-    public void create (Client client) {
-        baseRepository.save(client);
+    public Client create (Client client) {
+        return baseRepository.save(client);
     }
 
     @Override
-    public List<Client> findAllByName (Client name) {
+    public List <Client> findAllByName (String name) {
         return baseRepository.findAllByName (name);
+    }
+
+    @Override
+    public List <Client> findAll () {
+        return baseRepository.findAll();
     }
 }
 
 @Repository
 interface BaseClientRepository extends JpaRepository <Client, Integer> {
     @Query(value = "select c from Client c where c.name = :name")
-    List<Client> findAllByName ( @Param(value = "name") Client name);
+    List <Client> findAllByName (@Param(value = "name") String name);
 }

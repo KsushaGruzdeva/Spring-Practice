@@ -23,20 +23,25 @@ public class EmployeeRepositoryDao implements EmployeeRepository {
     }
 
     @Override
-    public void create (Employee employee) {
-        baseRepository.save(employee);
+    public Employee create (Employee employee) {
+        return baseRepository.save(employee);
     }
 
     @Override
-    public List<Employee> findAllBySurnameAndNameAndPatronymic(Employee surname, Employee name, Employee patronymic) {
+    public List <Employee> findAllBySurnameAndNameAndPatronymic(String surname, String name, String patronymic) {
         return baseRepository.findAllBySurnameAndNameAndPatronymic(surname, name, patronymic);
+    }
+
+    @Override
+    public List <Employee> findAll () {
+        return baseRepository.findAll();
     }
 }
 
 @Repository
 interface BaseEmployeeRepository extends JpaRepository <Employee, Integer> {
     @Query(value = "select e from Employee e where e.surname = :surname and e.name = :name and e.patronymic = :patronymic")
-    List<Employee> findAllBySurnameAndNameAndPatronymic (@Param(value = "surname") Employee surname,
-                                                         @Param(value = "name") Employee name,
-                                                         @Param(value = "patronymic") Employee patronymic);
+    List <Employee> findAllBySurnameAndNameAndPatronymic (@Param(value = "surname") String surname,
+                                                         @Param(value = "name") String name,
+                                                         @Param(value = "patronymic") String patronymic);
 }

@@ -7,6 +7,7 @@ import com.springpractice.entities.Employee;
 
 public interface EmployeeRepository {
     Optional <Employee> findById (int id);
-    void create (Employee employee);
-    List<Employee> findAllBySurnameAndNameAndPatronymic (Employee surname, Employee name, Employee patronymic);
+    Employee create (Employee employee);
+    List<Employee> findAll ();
+    List <Employee> findAllBySurnameAndNameAndPatronymic (String surname, String name, String patronymic);
 }

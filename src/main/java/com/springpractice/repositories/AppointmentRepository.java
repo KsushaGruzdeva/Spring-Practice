@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.springpractice.entities.Appointment;
 import com.springpractice.entities.Client;
+import com.springpractice.entities.EmployeeServices;
 
 @Repository
 public interface AppointmentRepository{
     Optional <Appointment> findById (int id);
-    void create (Appointment client);
-    List<Appointment> findAllByClientId (Client id);
-    List<Appointment> findAllByTimeAndDate (Appointment time, Appointment date);
+    Appointment create (Appointment appointment);
+    List<Appointment> findAllByClient (Optional <Client> client);
+    List<Appointment> findAllByEmployeeService (EmployeeServices employeeServices);
+    List<Appointment> findAll ();
 }

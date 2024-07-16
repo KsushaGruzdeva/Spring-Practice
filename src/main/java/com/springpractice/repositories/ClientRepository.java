@@ -7,6 +7,7 @@ import com.springpractice.entities.Client;
 
 public interface ClientRepository {
     Optional <Client> findById (int id);
-    void create (Client client);
-    List <Client> findAllByName (Client name);
+    Client create (Client client);
+    List <Client> findAllByName (String name);
+    List<Client> findAll ();
 }

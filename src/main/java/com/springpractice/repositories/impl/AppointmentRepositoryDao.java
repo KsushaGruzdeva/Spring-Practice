@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.springpractice.entities.Appointment;
 import com.springpractice.entities.Client;
+import com.springpractice.entities.EmployeeServices;
 import com.springpractice.repositories.AppointmentRepository;
 
 @Repository
@@ -24,29 +25,32 @@ public class AppointmentRepositoryDao implements AppointmentRepository{
     }
 
     @Override
-    public void create (Appointment appointment) {
-        baseRepository.save(appointment);
+    public Appointment create (Appointment appointment) {
+        return baseRepository.save(appointment);
     }
 
     @Override
-    public List<Appointment> findAllByClientId (Client id) {
-        return baseRepository.findAllByClientId (id);
+    public List<Appointment> findAllByClient (Optional <Client> client) {
+        return baseRepository.findAllByClient (client);
     }
 
     @Override
-    public List<Appointment> findAllByTimeAndDate (Appointment time, Appointment date) {
-        return baseRepository.findAllByTimeAndDate (time, date);
+    public List<Appointment> findAllByEmployeeService (EmployeeServices employeeServices) {
+        return baseRepository.findAllByEmployeeService (employeeServices);
+    }
+
+    @Override
+    public List <Appointment> findAll () {
+        return baseRepository.findAll();
     }
 }
 
 @Repository
 interface BaseAppointmentRepository extends JpaRepository<Appointment, Integer> {
     //Search all appointments for one client by his id
-    @Query(value = "select a from Appointment a join a.client c where c.id = :id")
-    List<Appointment> findAllByClientId (@Param(value = "id") Client id);
+    @Query(value = "select a from Appointment a where a.client = :client")
+    List<Appointment> findAllByClient (@Param(value = "client") Optional <Client> client);
 
-    //Search all appointments by time and date
-    @Query(value = "select a from Appointment a where a.time = :time and a.date = :date")
-    List<Appointment> findAllByTimeAndDate (@Param(value = "time") Appointment time,
-                                            @Param(value = "date") Appointment date);
+    @Query(value = "select a from Appointment a where a.employeeServices = :employeeServices")
+    List<Appointment> findAllByEmployeeService (@Param(value = "employeeServices") EmployeeServices employeeServices);
 }

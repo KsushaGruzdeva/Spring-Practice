@@ -9,7 +9,9 @@ import com.springpractice.entities.Services;
 
 public interface EmployeeServicesRepository {
     Optional <EmployeeServices> findById (int id);
-    void create (EmployeeServices employee);
-    List<Services> findAllServiceByEmployeeId (Employee id);
-    List<Employee> findAllEmployeeByServiceId (Services id);
+    EmployeeServices create (EmployeeServices employee);
+    List<Services> findAllServiceByEmployeeId (int id);
+    List<Employee> findAllEmployeeByServiceId (int id);
+    List<EmployeeServices> findAllByServiceId (int id);
+    List<EmployeeServices> findAll ();
 }

@@ -21,13 +21,18 @@ public class ServiceRepositoryDao implements ServiceRepository{
     }
 
     @Override
-    public void create (Services service) {
-        baseRepository.save(service);
+    public Services create (Services service) {
+        return baseRepository.save(service);
     }
 
     @Override
     public List <Services> findByName (String name) {
         return baseRepository.findByName(name);
+    }
+
+    @Override
+    public List <Services> findAll () {
+        return baseRepository.findAll();
     }
 }
 
@@ -36,5 +41,5 @@ interface BaseServiceRepository extends JpaRepository <Services, Integer> {
 
     // List<Student> findAllByGroupName(String groupName);
     // @Query(value = "select s from Service s where s.name = :name")
-    List<Services> findByName (String name);
+    List <Services> findByName (String name);
 }
