@@ -3,13 +3,16 @@ package com.springpractice.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.springpractice.entities.Employee;
-import com.springpractice.entities.EmployeeServices;
-import com.springpractice.entities.Services;
+import com.springpractice.dtos.CreateEmployeeServicesDto;
+import com.springpractice.dtos.EmployeeDto;
+import com.springpractice.dtos.EmployeeServicesDto;
+import com.springpractice.dtos.ServicesDto;
 
 public interface EmployeeServicesService {
-    Optional <EmployeeServices> findById (int id);
-    void create (EmployeeServices employee);
-    List<Services> findAllServiceByEmployeeId (Employee id);
-    List<Employee> findAllEmployeeByServiceId (Services id);
+    Optional <EmployeeServicesDto> findById (int id);
+    List <EmployeeServicesDto> findAll ();
+    EmployeeServicesDto create (CreateEmployeeServicesDto employee);
+    List<ServicesDto> findAllServiceByEmployeeId (int id);
+    List<EmployeeDto> findAllEmployeeByServiceId (int id);
+    List<EmployeeServicesDto> findAllByServiceId (int id);
 }

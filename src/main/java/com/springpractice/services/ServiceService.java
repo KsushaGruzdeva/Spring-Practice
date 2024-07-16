@@ -3,10 +3,12 @@ package com.springpractice.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.springpractice.entities.Services;
+import com.springpractice.dtos.CreateServicesDto;
+import com.springpractice.dtos.ServicesDto;
 
 public interface ServiceService {
-    Optional <Services> findById (int id);
-    void create (Services service);
-    List <Services> findByName (String name);
+    Optional <ServicesDto> findById (int id);
+    ServicesDto create (CreateServicesDto service);
+    List <ServicesDto> findByName (String name);
+    List <ServicesDto> findAll ();
 }
