@@ -8,7 +8,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,13 +16,13 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Appointment extends BaseEntity {
     private Date date;
-    private long time;
+    private Date time;
     private Client client;
     private EmployeeServices employeeServices;
 
     protected Appointment() {}
 
-    public Appointment (Date date, long time, Client client, EmployeeServices employeeServices) {
+    public Appointment (Date date, Date time, Client client, EmployeeServices employeeServices) {
         this.date = date;
         this.time = time;
         this.client = client;
@@ -39,15 +39,15 @@ public class Appointment extends BaseEntity {
     }
 
     @Column (name = "time")
-    public long getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime (long time) {
+    public void setTime (Date time) {
         this.time = time;
     }
 
-    @OneToOne (fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (name = "client_id", referencedColumnName = "id")
     public Client getClient() {
         return client;
@@ -57,7 +57,7 @@ public class Appointment extends BaseEntity {
         this.client = client;
     }
 
-    @OneToOne (fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (name = "employeeServices_id", referencedColumnName = "id")
     public EmployeeServices getEmployeeServices() {
         return employeeServices;
