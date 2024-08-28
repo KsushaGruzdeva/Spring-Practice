@@ -9,15 +9,17 @@ public class AppointmentDto {
     private String clientName;
     private String employeeServicesServiceName;
     private String employeeServicesEmployeeName;
+    private int employeeServicesServicePrice;
     protected AppointmentDto() {}
 
-    public AppointmentDto (int id, Date date, Date time, String clientName, String employeeServicesServiceName, String employeeServicesEmployeeName) {
+    public AppointmentDto (int id, Date date, Date time, String clientName, String employeeServicesServiceName, String employeeServicesEmployeeName, int employeeServicesServicePrice) {
         this.id = id;
         this.date = date;
         this.time = time;
         this.clientName = clientName;
         this.employeeServicesServiceName = employeeServicesServiceName;
         this.employeeServicesEmployeeName = employeeServicesEmployeeName;
+        this.employeeServicesServicePrice = employeeServicesServicePrice;
     }
 
     public int getId() {
@@ -66,5 +68,12 @@ public class AppointmentDto {
 
     public void employeeServicesEmployeeName (String employeeServicesEmployeeName) {
         this.employeeServicesEmployeeName = employeeServicesEmployeeName;
+    }
+    public int getEmployeeServicesServicePrice() {
+        return employeeServicesServicePrice;
+    }
+
+    public void setEmployeeServicesServicePrice (int employeeServicesServicePrice) {
+        this.employeeServicesServicePrice = employeeServicesServicePrice;
     }
 }
