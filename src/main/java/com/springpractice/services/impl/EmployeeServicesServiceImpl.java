@@ -2,7 +2,6 @@ package com.springpractice.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,9 @@ import com.springpractice.dtos.ServicesDto;
 import com.springpractice.entities.Employee;
 import com.springpractice.entities.EmployeeServices;
 import com.springpractice.entities.Services;
-import com.springpractice.repositories.EmployeeRepository;
-import com.springpractice.repositories.EmployeeServicesRepository;
-import com.springpractice.repositories.ServiceRepository;
+import com.springpractice.repositories.impl.EmployeeRepositoryImpl;
+import com.springpractice.repositories.impl.EmployeeServicesRepositoryImpl;
+import com.springpractice.repositories.impl.ServiceRepositoryImpl;
 import com.springpractice.services.EmployeeServicesService;
 
 @Service
@@ -25,29 +24,29 @@ public class EmployeeServicesServiceImpl implements EmployeeServicesService{
     private final ModelMapper mapper = new ModelMapper();
 
     @Autowired
-    private EmployeeServicesRepository employeeServicesRepository;
+    private EmployeeServicesRepositoryImpl employeeServicesRepository;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeRepositoryImpl employeeRepository;
 
     @Autowired
-    private ServiceRepository serviceRepository;
+    private ServiceRepositoryImpl serviceRepository;
 
     @Override
-    public Optional<EmployeeServicesDto> findById(int id) {
-        Optional<EmployeeServices> employeeServicesOptional = employeeServicesRepository.findById(id);
-        return Optional.of(mapper.map(employeeServicesOptional.get(), EmployeeServicesDto.class));
+    public EmployeeServicesDto findById(int id) {
+        EmployeeServices employeeServices = employeeServicesRepository.findById(EmployeeServices.class, id);
+        return mapper.map(employeeServices, EmployeeServicesDto.class);
     }
 
     @Override
-    public EmployeeServicesDto create(CreateEmployeeServicesDto createEmployeeServicesDto) {
-        Optional <Employee> employee = employeeRepository.findById(createEmployeeServicesDto.getEmployeeId());
-        if (employee.isEmpty())
-            System.out.println(createEmployeeServicesDto.getEmployeeId());
-        Optional <Services> service = serviceRepository.findById(createEmployeeServicesDto.getServiceId());
+    public void create(CreateEmployeeServicesDto createEmployeeServicesDto) {
+        Employee employee = employeeRepository.findById(Employee.class, createEmployeeServicesDto.getEmployeeId());
+        // if (employee.isEmpty())
+        //     System.out.println(createEmployeeServicesDto.getEmployeeId());
+        Services service = serviceRepository.findById(Services.class, createEmployeeServicesDto.getServiceId());
 
-        EmployeeServices employeeServices = new EmployeeServices(employee.get(), service.get());
-        return mapper.map(employeeServicesRepository.create(employeeServices), EmployeeServicesDto.class);
+        EmployeeServices employeeServices = new EmployeeServices(employee, service);
+        employeeServicesRepository.create(employeeServices);
     }
 
     @Override
@@ -80,13 +79,13 @@ public class EmployeeServicesServiceImpl implements EmployeeServicesService{
         return employeesServicesDtos;
     }
 
-    @Override
-    public List<EmployeeServicesDto> findAll () {
-        List<EmployeeServices> employeeServices = employeeServicesRepository.findAll();
-        List<EmployeeServicesDto> employeesServicesDtos = new ArrayList<>();
-        for (int i = 0; i < employeeServices.size(); i++) {
-            employeesServicesDtos.add(mapper.map(employeeServices.get(i), EmployeeServicesDto.class));
-        }
-        return employeesServicesDtos;
-    }
+    // @Override
+    // public List<EmployeeServicesDto> findAll () {
+    //     List<EmployeeServices> employeeServices = employeeServicesRepository.findAll();
+    //     List<EmployeeServicesDto> employeesServicesDtos = new ArrayList<>();
+    //     for (int i = 0; i < employeeServices.size(); i++) {
+    //         employeesServicesDtos.add(mapper.map(employeeServices.get(i), EmployeeServicesDto.class));
+    //     }
+    //     return employeesServicesDtos;
+    // }
 }
