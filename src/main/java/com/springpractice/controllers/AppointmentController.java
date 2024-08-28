@@ -1,7 +1,6 @@
 package com.springpractice.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,19 +25,19 @@ public class AppointmentController {
 
     @GetMapping("/{id}")
     public AppointmentDto findById(@PathVariable() int id){
-        Optional<AppointmentDto> appointmentOpt = appointmentService.findById(id);
-        return appointmentOpt.get();
-    }
-
-    @GetMapping("")
-    public List<AppointmentDto> findAll(){
-        List <AppointmentDto> appointment = appointmentService.findAll();
+        AppointmentDto appointment = appointmentService.findById(id);
         return appointment;
     }
 
+    // @GetMapping("")
+    // public List<AppointmentDto> findAll(){
+    //     List <AppointmentDto> appointment = appointmentService.findAll();
+    //     return appointment;
+    // }
+
     @PostMapping("")
-    public AppointmentDto create(@RequestBody CreateAppointmentDto createAppointmentDto){
-        return appointmentService.create(createAppointmentDto);
+    public void create(@RequestBody CreateAppointmentDto createAppointmentDto){
+        appointmentService.create(createAppointmentDto);
     }
 
     @GetMapping("/isDiscount")
@@ -54,7 +53,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/byService")
-    public AppointmentDto createByService(@RequestBody CreateByServiceAppointment createByServiceAppointment){
-        return appointmentService.createByService(createByServiceAppointment);
+    public void createByService(@RequestBody CreateByServiceAppointment createByServiceAppointment){
+        appointmentService.createByService(createByServiceAppointment);
     }
 }

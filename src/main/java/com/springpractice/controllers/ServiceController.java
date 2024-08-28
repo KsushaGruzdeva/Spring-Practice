@@ -1,7 +1,6 @@
 package com.springpractice.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +23,13 @@ public class ServiceController {
 
     @GetMapping("/{id}")
     public ServicesDto findById(@PathVariable() int id){
-        Optional<ServicesDto> servicesOpt = servicesService.findById(id);
-        return servicesOpt.get();
+        ServicesDto services = servicesService.findById(id);
+        return services;
     }
 
     @PostMapping("")
-    public ServicesDto create(@RequestBody CreateServicesDto createServicesDto){
-        return servicesService.create(createServicesDto);
+    public void create(@RequestBody CreateServicesDto createServicesDto){
+        servicesService.create(createServicesDto);
     }
 
     @GetMapping("/byName")
@@ -39,9 +38,9 @@ public class ServiceController {
         return servicesOpt;
     }
 
-    @GetMapping("")
-    public List <ServicesDto> findAll(){
-        List <ServicesDto> servicesOpt = servicesService.findAll();
-        return servicesOpt;
-    }
+    // @GetMapping("")
+    // public List <ServicesDto> findAll(){
+    //     List <ServicesDto> servicesOpt = servicesService.findAll();
+    //     return servicesOpt;
+    // }
 }

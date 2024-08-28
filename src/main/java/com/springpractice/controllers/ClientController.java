@@ -1,7 +1,6 @@
 package com.springpractice.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +23,13 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public ClientDto findById(@PathVariable() int id){
-        Optional<ClientDto> clientOpt = clientService.findById(id);
-        return clientOpt.get();
+        ClientDto client = clientService.findById(id);
+        return client;
     }
 
     @PostMapping("")
-    public ClientDto create(@RequestBody CreateClientDto createClientDto){
-        return clientService.create(createClientDto);
+    public void create(@RequestBody CreateClientDto createClientDto){
+        clientService.create(createClientDto);
     }
 
     @GetMapping("/byName")
@@ -39,9 +38,9 @@ public class ClientController {
         return clientOpt;
     }
 
-    @GetMapping("")
-    public List <ClientDto> findAll(){
-        List <ClientDto> clientOpt = clientService.findAll();
-        return clientOpt;
-    }
+    // @GetMapping("")
+    // public List <ClientDto> findAll(){
+    //     List <ClientDto> clientOpt = clientService.findAll();
+    //     return clientOpt;
+    // }
 }

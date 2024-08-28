@@ -1,7 +1,6 @@
 package com.springpractice.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,19 +25,19 @@ public class EmployeeServicesController {
 
     @GetMapping("/{id}")
     public EmployeeServicesDto findById(@PathVariable() int id){
-        Optional<EmployeeServicesDto> employeeServicesOpt = employeeServicesService.findById(id);
-        return employeeServicesOpt.get();
+        EmployeeServicesDto employeeServices = employeeServicesService.findById(id);
+        return employeeServices;
     }
 
-    @GetMapping("")
-    public List <EmployeeServicesDto> findAll(){
-        List <EmployeeServicesDto> employeeServicesOpt = employeeServicesService.findAll();
-        return employeeServicesOpt;
-    }
+    // @GetMapping("")
+    // public List <EmployeeServicesDto> findAll(){
+    //     List <EmployeeServicesDto> employeeServicesOpt = employeeServicesService.findAll();
+    //     return employeeServicesOpt;
+    // }
 
     @PostMapping("")
-    public EmployeeServicesDto create(@RequestBody CreateEmployeeServicesDto createEmployeeServicesDto){
-        return employeeServicesService.create(createEmployeeServicesDto);
+    public void  create(@RequestBody CreateEmployeeServicesDto createEmployeeServicesDto){
+        employeeServicesService.create(createEmployeeServicesDto);
     }
 
     @GetMapping("/byService")
