@@ -36,7 +36,7 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public List<ClientDto> findAll () {
-        List <Client> client = clientRepository.findAll(Client.class);
+        List <Client> client = clientRepository.findAll();
         List<ClientDto> clientDtos = new ArrayList<>();
         for (int i = 0; i < client.size(); i++) {
             clientDtos.add(mapper.map(client.get(i), ClientDto.class));

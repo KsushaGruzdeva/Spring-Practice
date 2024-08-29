@@ -49,7 +49,7 @@ public class EmployeeServicesServiceImpl implements EmployeeServicesService{
 
     @Override
     public List<EmployeeServicesDto> findAll () {
-        List<EmployeeServices> employeeServices = employeeServicesRepository.findAll(EmployeeServices.class);
+        List<EmployeeServices> employeeServices = employeeServicesRepository.findAll();
         List<EmployeeServicesDto> employeesServicesDtos = new ArrayList<>();
         for (int i = 0; i < employeeServices.size(); i++) {
             employeesServicesDtos.add(mapper.map(employeeServices.get(i), EmployeeServicesDto.class));

@@ -24,5 +24,11 @@ public class EmployeeServicesRepositoryImpl extends BaseRepository<EmployeeServi
         return entityManager.createQuery("from EmployeeServices es where es.service.id = :id", EmployeeServices.class)
         .setParameter("id", id)
         .getResultList();
-     }
+    }
+
+    @Override
+    public List <EmployeeServices> findAll () {
+        return entityManager.createQuery("from EmployeeServices es", EmployeeServices.class)
+        .getResultList();
+    }
 }

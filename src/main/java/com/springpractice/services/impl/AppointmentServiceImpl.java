@@ -50,7 +50,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 
     @Override
     public List<AppointmentDto> findAll () {
-        List <Appointment> appointment = appointmentRepository.findAll(Appointment.class);
+        List <Appointment> appointment = appointmentRepository.findAll();
         List <AppointmentDto> appointmentDtos = new ArrayList<>();
         for (int i = 0; i < appointment.size(); i++) {
             appointmentDtos.add(mapper.map(appointment.get(i), AppointmentDto.class));
@@ -132,7 +132,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         List <Services> services = new ArrayList<>();
         if (appointment.isEmpty())
         {
-            List <Appointment> allAppointment = appointmentRepository.findAll(Appointment.class);
+            List <Appointment> allAppointment = appointmentRepository.findAll();
             List <Integer> employeeServicesId = new ArrayList<>();
             for (int i = 0; i < allAppointment.size(); i++){
                 employeeServicesId.add(allAppointment.get(i).getEmployeeServices().getId());
