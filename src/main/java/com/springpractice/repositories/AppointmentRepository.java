@@ -10,7 +10,6 @@ import com.springpractice.entities.EmployeeServices;
 
 @Repository
 public interface AppointmentRepository{
-    List <Appointment> findAll();
     List<Appointment> findAllByClient (Client client);
     List<Appointment> findAllByEmployeeService (EmployeeServices employeeServices);
 }

@@ -36,10 +36,4 @@ public class AppointmentRepositoryImpl extends BaseRepository<Appointment, Integ
         .setParameter("employeeServices", employeeServices)
         .getResultList();
     }
-
-    @Override
-    public List <Appointment> findAll () {
-        return entityManager.createQuery("from Appointment a", Appointment.class)
-        .getResultList();
-    }
 }

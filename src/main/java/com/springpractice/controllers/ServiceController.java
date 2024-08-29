@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springpractice.dtos.CreateServicesDto;
@@ -32,15 +31,9 @@ public class ServiceController {
         servicesService.create(createServicesDto);
     }
 
-    @GetMapping("/byName")
-    public List <ServicesDto> findByName(@RequestParam(name = "name") String name){
-        List <ServicesDto> servicesOpt = servicesService.findByName(name);
+    @GetMapping("")
+    public List <ServicesDto> findAll(){
+        List <ServicesDto> servicesOpt = servicesService.findAll();
         return servicesOpt;
     }
-
-    // @GetMapping("")
-    // public List <ServicesDto> findAll(){
-    //     List <ServicesDto> servicesOpt = servicesService.findAll();
-    //     return servicesOpt;
-    // }
 }

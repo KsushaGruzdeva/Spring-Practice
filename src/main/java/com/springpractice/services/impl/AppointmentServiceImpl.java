@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springpractice.dtos.AppointmentDto;
-import com.springpractice.dtos.CreateAppointmentDto;
 import com.springpractice.dtos.CreateByServiceAppointment;
 import com.springpractice.dtos.ServicesDto;
 import com.springpractice.entities.Appointment;
@@ -50,38 +49,8 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
-    public void create(CreateAppointmentDto createAppointmentDto) {
-        Client client = clientRepository.findById(Client.class, createAppointmentDto.getClientId());
-        System.out.println(createAppointmentDto.getClientId());
-        EmployeeServices employeeServices = employeeServicesRepository.findById(EmployeeServices.class, createAppointmentDto.getEmployeeServices());
-
-        Appointment appointment = new Appointment(createAppointmentDto.getDate(), createAppointmentDto.getTime(), client, employeeServices);
-        appointmentRepository.create(appointment);
-    }
-
-    @Override
-    public List<AppointmentDto> findAllByClient (Client client) {
-        List <Appointment> appointment = appointmentRepository.findAllByClient(client);
-        List <AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (int i = 0; i < appointment.size(); i++) {
-            appointmentDtos.add(mapper.map(appointment.get(i), AppointmentDto.class));
-        }
-        return appointmentDtos;
-    }
-
-    @Override
     public List<AppointmentDto> findAll () {
-        List <Appointment> appointment = appointmentRepository.findAll();
-        List <AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (int i = 0; i < appointment.size(); i++) {
-            appointmentDtos.add(mapper.map(appointment.get(i), AppointmentDto.class));
-        }
-        return appointmentDtos;
-    }
-
-    @Override
-    public List<AppointmentDto> findAllByEmployeeService (EmployeeServices employeeServices) {
-        List <Appointment> appointment = appointmentRepository.findAllByEmployeeService(employeeServices);
+        List <Appointment> appointment = appointmentRepository.findAll(Appointment.class);
         List <AppointmentDto> appointmentDtos = new ArrayList<>();
         for (int i = 0; i < appointment.size(); i++) {
             appointmentDtos.add(mapper.map(appointment.get(i), AppointmentDto.class));
@@ -163,7 +132,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         List <Services> services = new ArrayList<>();
         if (appointment.isEmpty())
         {
-            List <Appointment> allAppointment = appointmentRepository.findAll();
+            List <Appointment> allAppointment = appointmentRepository.findAll(Appointment.class);
             List <Integer> employeeServicesId = new ArrayList<>();
             for (int i = 0; i < allAppointment.size(); i++){
                 employeeServicesId.add(allAppointment.get(i).getEmployeeServices().getId());

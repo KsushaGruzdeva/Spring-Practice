@@ -8,6 +8,5 @@ import com.springpractice.dtos.ServicesDto;
 public interface ServiceService {
     ServicesDto findById (int id);
     void create (CreateServicesDto service);
-    List <ServicesDto> findByName (String name);
-    // List <ServicesDto> findAll ();
+    List <ServicesDto> findAll ();
 }

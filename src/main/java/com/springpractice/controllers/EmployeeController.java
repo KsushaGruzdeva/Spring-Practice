@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springpractice.dtos.CreateEmployeeDto;
@@ -31,15 +30,10 @@ public class EmployeeController {
     public void create(@RequestBody CreateEmployeeDto createEmployeeDto){
         employeeService.create(createEmployeeDto);
     }
-    @GetMapping("/byFIO")
-    public List <EmployeeDto> findAllBySurnameAndNameAndPatronymic(@RequestParam(name = "surname") String surname, @RequestParam(name = "name") String name, @RequestParam(name = "patronymic") String patronymic){
-        List <EmployeeDto> employeeOpt = employeeService.findAllBySurnameAndNameAndPatronymic(surname, name, patronymic);
+
+    @GetMapping("")
+    public List <EmployeeDto> findAll(){
+        List <EmployeeDto> employeeOpt = employeeService.findAll();
         return employeeOpt;
     }
-
-    // @GetMapping("")
-    // public List <EmployeeDto> findAll(){
-    //     List <EmployeeDto> employeeOpt = employeeService.findAll();
-    //     return employeeOpt;
-    // }
 }

@@ -34,22 +34,12 @@ public class ServiceServiceImpl implements ServiceService{
     }
 
     @Override
-    public List <ServicesDto> findByName (String name) {
-        List <Services> services = serviceRepository.findByName(name);
+    public List <ServicesDto> findAll () {
+        List <Services> services = serviceRepository.findAll(Services.class);
         List<ServicesDto> servicesDtos = new ArrayList<>();
         for (int i = 0; i < services.size(); i++) {
             servicesDtos.add(mapper.map(services.get(i), ServicesDto.class));
         }
         return servicesDtos;
     }
-
-    // @Override
-    // public List <ServicesDto> findAll () {
-    //     List <Services> services = serviceRepository.findAll();
-    //     List<ServicesDto> servicesDtos = new ArrayList<>();
-    //     for (int i = 0; i < services.size(); i++) {
-    //         servicesDtos.add(mapper.map(services.get(i), ServicesDto.class));
-    //     }
-    //     return servicesDtos;
-    // }
 }

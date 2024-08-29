@@ -31,9 +31,4 @@ public class ServiceRepositoryImpl extends BaseRepository<Services, Integer> imp
     public void update (Services services) {
         entityManager.merge(services);
     }
-
-    // @Override
-    // public List <Services> findAll () {
-    //     return baseRepository.findAll();
-    // }
 }

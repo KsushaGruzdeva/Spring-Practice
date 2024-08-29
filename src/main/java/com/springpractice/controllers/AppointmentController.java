@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springpractice.dtos.AppointmentDto;
-import com.springpractice.dtos.CreateAppointmentDto;
 import com.springpractice.dtos.CreateByServiceAppointment;
 import com.springpractice.dtos.ServicesDto;
 import com.springpractice.services.AppointmentService;
@@ -29,15 +28,10 @@ public class AppointmentController {
         return appointment;
     }
 
-    // @GetMapping("")
-    // public List<AppointmentDto> findAll(){
-    //     List <AppointmentDto> appointment = appointmentService.findAll();
-    //     return appointment;
-    // }
-
-    @PostMapping("")
-    public void create(@RequestBody CreateAppointmentDto createAppointmentDto){
-        appointmentService.create(createAppointmentDto);
+    @GetMapping("")
+    public List<AppointmentDto> findAll(){
+        List <AppointmentDto> appointment = appointmentService.findAll();
+        return appointment;
     }
 
     @GetMapping("/isDiscount")

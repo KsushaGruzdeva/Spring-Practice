@@ -35,22 +35,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List <EmployeeDto> findAllBySurnameAndNameAndPatronymic (String surname, String name, String patronymic) {
-        List <Employee> employee = employeeRepository.findAllBySurnameAndNameAndPatronymic(surname, name, patronymic);
+    public List <EmployeeDto> findAll () {
+        List <Employee> employee = employeeRepository.findAll(Employee.class);
         List<EmployeeDto> employeesDtos = new ArrayList<>();
         for (int i = 0; i < employee.size(); i++) {
                 employeesDtos.add(mapper.map(employee.get(i), EmployeeDto.class));
             }
         return employeesDtos;
     }
-
-    // @Override
-    // public List <EmployeeDto> findAll () {
-    //     List <Employee> employee = employeeRepository.findAll();
-    //     List<EmployeeDto> employeesDtos = new ArrayList<>();
-    //     for (int i = 0; i < employee.size(); i++) {
-    //             employeesDtos.add(mapper.map(employee.get(i), EmployeeDto.class));
-    //         }
-    //     return employeesDtos;
-    // }
 }
