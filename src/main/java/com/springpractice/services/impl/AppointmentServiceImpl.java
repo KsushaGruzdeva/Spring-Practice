@@ -109,15 +109,6 @@ public class AppointmentServiceImpl implements AppointmentService{
         if (employeeServices.isEmpty())
             throw new AppointmentNotCreateException();
 
-        // Проверить есть ли скидка и вывести новую цену, как я не знаю,
-        // ведь мы ссылаемся на конкретный сервис, в котором хранится цена
-
-        // if (isDiscount(client.getId())) {
-        //     int price = employeeServices.get(0).getService().getPrice();
-        //     price -= 500;
-        //     serviceRepository.update(employeeServices.get(0).getService());
-        // }
-
         Appointment appointment = new Appointment(createByServiceAppointmentDto.getDate(), createByServiceAppointmentDto.getTime(), client, employeeServices.get(0));
         appointmentRepository.create(appointment);
     }
