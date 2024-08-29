@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.springpractice.dtos.CreateServicesDto;
 import com.springpractice.dtos.ServicesDto;
 import com.springpractice.entities.Services;
+import com.springpractice.exceptions.ServiceNotFoundException;
 import com.springpractice.repositories.impl.ServiceRepositoryImpl;
 import com.springpractice.services.ServiceService;
 
@@ -23,7 +24,8 @@ public class ServiceServiceImpl implements ServiceService{
     @Override
     public ServicesDto findById(int id) {
         Services services = serviceRepository.findById(Services.class, id);
-
+        if (services == null)
+            throw new ServiceNotFoundException(id);
         return mapper.map(services, ServicesDto.class);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.springpractice.dtos.ClientDto;
 import com.springpractice.dtos.CreateClientDto;
 import com.springpractice.entities.Client;
+import com.springpractice.exceptions.ClientNotFoundException;
 import com.springpractice.repositories.impl.ClientRepositoryImpl;
 import com.springpractice.services.ClientService;
 
@@ -23,7 +24,8 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public ClientDto findById(int id) {
         Client client = clientRepository.findById(Client.class, id);
-
+        if (client == null)
+            throw new ClientNotFoundException(id);
         return mapper.map(client, ClientDto.class);
     }
 

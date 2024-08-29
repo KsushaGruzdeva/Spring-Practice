@@ -18,6 +18,7 @@ import com.springpractice.entities.Client;
 import com.springpractice.entities.EmployeeServices;
 import com.springpractice.entities.Services;
 import com.springpractice.exceptions.AppointmentNotCreateException;
+import com.springpractice.exceptions.AppointmentNotFoundException;
 import com.springpractice.exceptions.ClientNotFoundException;
 import com.springpractice.exceptions.ServiceNotFoundException;
 import com.springpractice.repositories.impl.AppointmentRepositoryImpl;
@@ -45,6 +46,8 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public AppointmentDto findById(int id) {
         Appointment appointment = appointmentRepository.findById(Appointment.class, id);
+        if (appointment == null)
+            throw new AppointmentNotFoundException(id);
         return mapper.map(appointment, AppointmentDto.class);
     }
 
@@ -60,7 +63,6 @@ public class AppointmentServiceImpl implements AppointmentService{
 
     @Override
     public Boolean isDiscount (int id){
-        // НАДО выводить ошибку, если пользователя не существует.
         try {
             Client client = clientRepository.findById(Client.class, id);
             if (client == null)
@@ -104,8 +106,6 @@ public class AppointmentServiceImpl implements AppointmentService{
             employeeServices.remove(employeeServicesBlocked.get(i));
         }
 
-        // Выводить ошибку, если недоступна запись на это время, так как нет свободных мастеров.
-
         if (employeeServices.isEmpty())
             throw new AppointmentNotCreateException();
 
@@ -124,7 +124,6 @@ public class AppointmentServiceImpl implements AppointmentService{
 
     @Override
     public List<ServicesDto> recomandation (int clientId) {
-        // НАДО выводить ошибку, если пользователя не существует.
         Client client = clientRepository.findById(Client.class, clientId);
         if (client == null)
             throw new ClientNotFoundException(clientId);

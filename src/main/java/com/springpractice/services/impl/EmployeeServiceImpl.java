@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.springpractice.dtos.CreateEmployeeDto;
 import com.springpractice.dtos.EmployeeDto;
 import com.springpractice.entities.Employee;
+import com.springpractice.exceptions.EmployeeNotFoundException;
 import com.springpractice.repositories.impl.EmployeeRepositoryImpl;
 import com.springpractice.services.EmployeeService;
 
@@ -23,14 +24,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto findById(int id) {
         Employee employee = employeeRepository.findById(Employee.class, id);
-
+        if (employee == null)
+            throw new EmployeeNotFoundException(id);
         return mapper.map(employee, EmployeeDto.class);
     }
 
     @Override
     public void create(CreateEmployeeDto createEmployeeDto) {
         Employee employee = mapper.map(createEmployeeDto, Employee.class);
-        // System.out.println(employee);
         employeeRepository.create(employee);
     }
 
