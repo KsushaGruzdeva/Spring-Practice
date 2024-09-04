@@ -33,7 +33,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto create(CreateEmployeeDto createEmployeeDto) {
         Employee employee = mapper.map(createEmployeeDto, Employee.class);
-        // employeeRepository.create(employee);
         return mapper.map(employeeRepository.create(employee), EmployeeDto.class);
     }
 

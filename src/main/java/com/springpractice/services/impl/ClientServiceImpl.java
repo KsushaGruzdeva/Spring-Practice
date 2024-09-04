@@ -34,7 +34,6 @@ public class ClientServiceImpl implements ClientService{
     public ClientDto create(CreateClientDto createClientDto) {
         Client client = mapper.map(createClientDto, Client.class);
         System.out.println(client);
-        // clientRepository.create(client);
         return mapper.map(clientRepository.create(client), ClientDto.class);
     }
 

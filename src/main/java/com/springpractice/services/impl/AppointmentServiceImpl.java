@@ -117,7 +117,6 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
 
         Appointment appointment = new Appointment(createByServiceAppointmentDto.getDate(), client, employeeServices.get(0));
-        // appointmentRepository.create(appointment);
         return mapper.map(appointmentRepository.create(appointment), AppointmentDto.class);
     }
 
