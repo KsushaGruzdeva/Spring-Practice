@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springpractice.dtos.AppointmentDto;
 import com.springpractice.dtos.CreateByServiceAppointment;
+import com.springpractice.dtos.DiscountDto;
 import com.springpractice.dtos.ServicesDto;
 import com.springpractice.services.AppointmentService;
 
@@ -34,20 +35,20 @@ public class AppointmentController {
         return appointment;
     }
 
-    @GetMapping("/isDiscount")
-    public boolean isDiscount(@RequestParam(name = "id") int id){
-        boolean discount = appointmentService.isDiscount(id);
+    @GetMapping("/hasDiscount")
+    public List<DiscountDto> hasDiscount(@RequestParam(name = "clientId") int clientId){
+        List<DiscountDto> discount = appointmentService.hasDiscount(clientId);
         return discount;
     }
 
-    @GetMapping("/recomandation")
-    public List<ServicesDto> recomandation (@RequestParam(name = "clientId") int clientId){
-        List <ServicesDto> services = appointmentService.recomandation(clientId);
+    @GetMapping("/getRecomandation")
+    public List<ServicesDto> getRecomandation (@RequestParam(name = "clientId") int clientId){
+        List <ServicesDto> services = appointmentService.getRecomandation(clientId);
         return services;
     }
 
-    @PostMapping("/byService")
-    public void createByService(@RequestBody CreateByServiceAppointment createByServiceAppointment){
-        appointmentService.createByService(createByServiceAppointment);
+    @PostMapping("/create")
+    public AppointmentDto createByService(@RequestBody CreateByServiceAppointment createByServiceAppointment){
+        return appointmentService.createByService(createByServiceAppointment);
     }
 }

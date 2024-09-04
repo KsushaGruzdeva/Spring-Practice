@@ -1,6 +1,5 @@
 package com.springpractice.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -11,15 +10,16 @@ import com.springpractice.dtos.CreateServicesDto;
 import com.springpractice.dtos.ServicesDto;
 import com.springpractice.entities.Services;
 import com.springpractice.exceptions.ServiceNotFoundException;
-import com.springpractice.repositories.impl.ServiceRepositoryImpl;
+import com.springpractice.repositories.ServiceRepository;
 import com.springpractice.services.ServiceService;
 
 @Service
 public class ServiceServiceImpl implements ServiceService{
-    private final ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     @Autowired
-    private ServiceRepositoryImpl serviceRepository;
+    private ModelMapper mapper;
 
     @Override
     public ServicesDto findById(int id) {
@@ -30,18 +30,15 @@ public class ServiceServiceImpl implements ServiceService{
     }
 
     @Override
-    public void create(CreateServicesDto createServicesDto) {
+    public ServicesDto create(CreateServicesDto createServicesDto) {
         Services services = mapper.map(createServicesDto, Services.class);
-        serviceRepository.create(services);
+        // serviceRepository.create(services);
+        return mapper.map(serviceRepository.create(services), ServicesDto.class);
     }
 
     @Override
     public List <ServicesDto> findAll () {
-        List <Services> services = serviceRepository.findAll();
-        List<ServicesDto> servicesDtos = new ArrayList<>();
-        for (int i = 0; i < services.size(); i++) {
-            servicesDtos.add(mapper.map(services.get(i), ServicesDto.class));
-        }
-        return servicesDtos;
+        List <Services> allServices = serviceRepository.findAll();
+        return allServices.stream().map(services -> mapper.map(services, ServicesDto.class)).toList();
     }
 }

@@ -27,13 +27,13 @@ public class ClientController {
     }
 
     @PostMapping("")
-    public void create(@RequestBody CreateClientDto createClientDto){
-        clientService.create(createClientDto);
+    public ClientDto create(@RequestBody CreateClientDto createClientDto){
+        return clientService.create(createClientDto);
     }
 
     @GetMapping("")
     public List <ClientDto> findAll(){
-        List <ClientDto> clientOpt = clientService.findAll();
-        return clientOpt;
+        List <ClientDto> client = clientService.findAll();
+        return client;
     }
 }

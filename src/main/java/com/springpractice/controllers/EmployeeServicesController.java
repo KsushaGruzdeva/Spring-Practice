@@ -28,12 +28,12 @@ public class EmployeeServicesController {
 
     @GetMapping("")
     public List <EmployeeServicesDto> findAll(){
-        List <EmployeeServicesDto> employeeServicesOpt = employeeServicesService.findAll();
-        return employeeServicesOpt;
+        List <EmployeeServicesDto> employeeServices = employeeServicesService.findAll();
+        return employeeServices;
     }
 
     @PostMapping("")
-    public void  create(@RequestBody CreateEmployeeServicesDto createEmployeeServicesDto){
-        employeeServicesService.create(createEmployeeServicesDto);
+    public EmployeeServicesDto  create(@RequestBody CreateEmployeeServicesDto createEmployeeServicesDto){
+        return employeeServicesService.create(createEmployeeServicesDto);
     }
 }

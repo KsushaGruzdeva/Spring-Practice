@@ -27,13 +27,13 @@ public class ServiceController {
     }
 
     @PostMapping("")
-    public void create(@RequestBody CreateServicesDto createServicesDto){
-        servicesService.create(createServicesDto);
+    public ServicesDto create(@RequestBody CreateServicesDto createServicesDto){
+        return servicesService.create(createServicesDto);
     }
 
     @GetMapping("")
     public List <ServicesDto> findAll(){
-        List <ServicesDto> servicesOpt = servicesService.findAll();
-        return servicesOpt;
+        List <ServicesDto> services = servicesService.findAll();
+        return services;
     }
 }

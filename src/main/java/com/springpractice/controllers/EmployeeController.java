@@ -27,13 +27,13 @@ public class EmployeeController {
     }
 
     @PostMapping("")
-    public void create(@RequestBody CreateEmployeeDto createEmployeeDto){
-        employeeService.create(createEmployeeDto);
+    public EmployeeDto create(@RequestBody CreateEmployeeDto createEmployeeDto){
+        return employeeService.create(createEmployeeDto);
     }
 
     @GetMapping("")
     public List <EmployeeDto> findAll(){
-        List <EmployeeDto> employeeOpt = employeeService.findAll();
-        return employeeOpt;
+        List <EmployeeDto> employee = employeeService.findAll();
+        return employee;
     }
 }

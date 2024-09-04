@@ -20,7 +20,13 @@ public abstract class BaseRepository<Entity, T> {
     }
 
     @Transactional
-    public void create (Entity entity){
+    public Entity create (Entity entity) {
         entityManager.persist(entity);
+        return entity;
     }
+
+    // @Transactional
+    // public Entity create (Entity entity){
+    //     return entityManager.persist(entity);
+    // }
 }

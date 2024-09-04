@@ -1,6 +1,5 @@
 package com.springpractice.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -15,52 +14,53 @@ import com.springpractice.entities.Services;
 import com.springpractice.exceptions.EmployeeNotFoundException;
 import com.springpractice.exceptions.EmployeeServicesNotFoundException;
 import com.springpractice.exceptions.ServiceNotFoundException;
-import com.springpractice.repositories.impl.EmployeeRepositoryImpl;
-import com.springpractice.repositories.impl.EmployeeServicesRepositoryImpl;
-import com.springpractice.repositories.impl.ServiceRepositoryImpl;
+import com.springpractice.repositories.EmployeeRepository;
+import com.springpractice.repositories.EmployeeServicesRepository;
+import com.springpractice.repositories.ServiceRepository;
 import com.springpractice.services.EmployeeServicesService;
 
 @Service
 public class EmployeeServicesServiceImpl implements EmployeeServicesService{
-    private final ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private EmployeeServicesRepository employeeServicesRepository;
 
     @Autowired
-    private EmployeeServicesRepositoryImpl employeeServicesRepository;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    private EmployeeRepositoryImpl employeeRepository;
+    private ServiceRepository serviceRepository;
 
     @Autowired
-    private ServiceRepositoryImpl serviceRepository;
+    private ModelMapper mapper;
 
     @Override
     public EmployeeServicesDto findById(int id) {
         EmployeeServices employeeServices = employeeServicesRepository.findById(EmployeeServices.class, id);
-        if (employeeServices == null)
+        if (employeeServices == null){
             throw new EmployeeServicesNotFoundException(id);
+        }
         return mapper.map(employeeServices, EmployeeServicesDto.class);
     }
 
     @Override
-    public void create(CreateEmployeeServicesDto createEmployeeServicesDto) {
+    public EmployeeServicesDto create(CreateEmployeeServicesDto createEmployeeServicesDto) {
         Employee employee = employeeRepository.findById(Employee.class, createEmployeeServicesDto.getEmployeeId());
-        if (employee == null)
+        if (employee == null){
             throw new EmployeeNotFoundException(createEmployeeServicesDto.getEmployeeId());
+        }
         Services service = serviceRepository.findById(Services.class, createEmployeeServicesDto.getServiceId());
-        if (service == null)
+        if (service == null){
             throw new ServiceNotFoundException(createEmployeeServicesDto.getServiceId());
+        }
 
         EmployeeServices employeeServices = new EmployeeServices(employee, service);
-        employeeServicesRepository.create(employeeServices);
+        // employeeServicesRepository.create(employeeServices);
+        return mapper.map(employeeServicesRepository.create(employeeServices), EmployeeServicesDto.class);
     }
 
     @Override
     public List<EmployeeServicesDto> findAll () {
-        List<EmployeeServices> employeeServices = employeeServicesRepository.findAll();
-        List<EmployeeServicesDto> employeesServicesDtos = new ArrayList<>();
-        for (int i = 0; i < employeeServices.size(); i++) {
-            employeesServicesDtos.add(mapper.map(employeeServices.get(i), EmployeeServicesDto.class));
-        }
-        return employeesServicesDtos;
+        List<EmployeeServices> allEmployeeServices = employeeServicesRepository.findAll();
+        return allEmployeeServices.stream().map(employeeServices -> mapper.map(employeeServices, EmployeeServicesDto.class)).toList();
     }
 }
