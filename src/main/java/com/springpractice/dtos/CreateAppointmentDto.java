@@ -4,15 +4,13 @@ import java.util.Date;
 
 public class CreateAppointmentDto {
     private Date date;
-    private Date time;
     private int clientId;
     private int employeeServicesId;
 
     protected CreateAppointmentDto() {}
 
-    public CreateAppointmentDto (int clientId, Date date, int employeeServicesId, Date time) {
+    public CreateAppointmentDto (int clientId, Date date, int employeeServicesId) {
         this.date = date;
-        this.time = time;
         this.clientId = clientId;
         this.employeeServicesId = employeeServicesId;
     }
@@ -23,14 +21,6 @@ public class CreateAppointmentDto {
 
     public void setDate (Date date) {
         this.date = date;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime (Date time) {
-        this.time = time;
     }
 
     public int getClientId() {

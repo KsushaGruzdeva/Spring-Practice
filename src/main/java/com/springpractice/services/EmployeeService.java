@@ -8,5 +8,5 @@ import com.springpractice.dtos.EmployeeDto;
 public interface EmployeeService {
     EmployeeDto findById (int id);
     List <EmployeeDto> findAll ();
-    void create (CreateEmployeeDto employeeDto);
+    EmployeeDto create (CreateEmployeeDto employeeDto);
 }

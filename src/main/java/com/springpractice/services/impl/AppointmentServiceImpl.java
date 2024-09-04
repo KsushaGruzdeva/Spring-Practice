@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.springpractice.dtos.AppointmentDto;
 import com.springpractice.dtos.CreateByServiceAppointment;
+import com.springpractice.dtos.DiscountDto;
 import com.springpractice.dtos.ServicesDto;
 import com.springpractice.entities.Appointment;
 import com.springpractice.entities.Client;
@@ -21,69 +22,73 @@ import com.springpractice.exceptions.AppointmentNotCreateException;
 import com.springpractice.exceptions.AppointmentNotFoundException;
 import com.springpractice.exceptions.ClientNotFoundException;
 import com.springpractice.exceptions.ServiceNotFoundException;
-import com.springpractice.repositories.impl.AppointmentRepositoryImpl;
-import com.springpractice.repositories.impl.ClientRepositoryImpl;
-import com.springpractice.repositories.impl.EmployeeServicesRepositoryImpl;
-import com.springpractice.repositories.impl.ServiceRepositoryImpl;
+import com.springpractice.repositories.AppointmentRepository;
+import com.springpractice.repositories.ClientRepository;
+import com.springpractice.repositories.EmployeeServicesRepository;
+import com.springpractice.repositories.ServiceRepository;
 import com.springpractice.services.AppointmentService;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
-    private final ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Autowired
-    private AppointmentRepositoryImpl appointmentRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    private ClientRepositoryImpl clientRepository;
+    private ServiceRepository serviceRepository;
 
     @Autowired
-    private ServiceRepositoryImpl serviceRepository;
+    private EmployeeServicesRepository employeeServicesRepository;
 
     @Autowired
-    private EmployeeServicesRepositoryImpl employeeServicesRepository;
+    private ModelMapper mapper;
 
     @Override
     public AppointmentDto findById(int id) {
         Appointment appointment = appointmentRepository.findById(Appointment.class, id);
-        if (appointment == null)
+        if (appointment == null){
             throw new AppointmentNotFoundException(id);
+        }
         return mapper.map(appointment, AppointmentDto.class);
     }
 
     @Override
     public List<AppointmentDto> findAll () {
-        List <Appointment> appointment = appointmentRepository.findAll();
-        List <AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (int i = 0; i < appointment.size(); i++) {
-            appointmentDtos.add(mapper.map(appointment.get(i), AppointmentDto.class));
-        }
-        return appointmentDtos;
+        List <Appointment> allAppointments = appointmentRepository.findAll();
+        return allAppointments.stream().map(appointment -> mapper.map(appointment, AppointmentDto.class)).toList();
+
     }
 
     @Override
-    public Boolean isDiscount (int id){
-        try {
-            Client client = clientRepository.findById(Client.class, id);
-            if (client == null)
-                throw new ClientNotFoundException(id);
-            List <Appointment> appointments = appointmentRepository.findAllByClient(client);
-            return appointments.isEmpty() || (appointments.size() + 1) % 5 == 0;
-        } catch (ClientNotFoundException e) {
-            System.err.println("Error finding this client: " + e.getMessage());
-            throw e;
+    public List<DiscountDto> hasDiscount (int id){
+        Client client = clientRepository.findById(Client.class, id);
+        if (client == null){
+            throw new ClientNotFoundException(id);
         }
+        List <Appointment> appointments = appointmentRepository.findAllByClient(client);
+        List<DiscountDto> discountDtos = new ArrayList<>();
+        if (appointments.isEmpty()){
+            discountDtos.add(new DiscountDto("first visit", 50));
+        }
+        else if ((appointments.size() + 1) % 5 == 0){
+            discountDtos.add(new DiscountDto("frequent customer", 15));
+        }
+        return discountDtos;
     }
 
     @Override
-    public void createByService (CreateByServiceAppointment createByServiceAppointmentDto) {
+    public AppointmentDto createByService (CreateByServiceAppointment createByServiceAppointmentDto) {
         Client client = clientRepository.findById(Client.class, createByServiceAppointmentDto.getClientId());
-        if (client == null)
+        if (client == null){
             throw new ClientNotFoundException(createByServiceAppointmentDto.getClientId());
+        }
         System.out.println(createByServiceAppointmentDto.getClientId());
         Services services = serviceRepository.findById(Services.class, createByServiceAppointmentDto.getServicesId());
-        if (services == null)
+        if (services == null){
             throw new ServiceNotFoundException(createByServiceAppointmentDto.getServicesId());
+        }
         System.out.println(services.getId());
         List <EmployeeServices> employeeServices = employeeServicesRepository.findAllByServiceId(services.getId());
 
@@ -92,8 +97,9 @@ public class AppointmentServiceImpl implements AppointmentService{
         for (int i = 0; i < employeeServices.size(); i++) {
             List <Appointment> appointmentByEmployeeService = appointmentRepository.findAllByEmployeeService(employeeServices.get(i));
             for (int j = 0; j < appointmentByEmployeeService.size(); j++) {
-                if (appointmentByEmployeeService.get(j).getDate().getTime() == createByServiceAppointmentDto.getDate().getTime() && appointmentByEmployeeService.get(j).getTime().getTime() == (createByServiceAppointmentDto.getTime().getTime()))
+                if (appointmentByEmployeeService.get(j).getDate().getTime() == createByServiceAppointmentDto.getDate().getTime()){
                     allAppointment.add(appointmentByEmployeeService.get(j));
+                }
             }
         }
 
@@ -106,22 +112,24 @@ public class AppointmentServiceImpl implements AppointmentService{
             employeeServices.remove(employeeServicesBlocked.get(i));
         }
 
-        if (employeeServices.isEmpty())
+        if (employeeServices.isEmpty()){
             throw new AppointmentNotCreateException();
+        }
 
-        Appointment appointment = new Appointment(createByServiceAppointmentDto.getDate(), createByServiceAppointmentDto.getTime(), client, employeeServices.get(0));
-        appointmentRepository.create(appointment);
+        Appointment appointment = new Appointment(createByServiceAppointmentDto.getDate(), client, employeeServices.get(0));
+        // appointmentRepository.create(appointment);
+        return mapper.map(appointmentRepository.create(appointment), AppointmentDto.class);
     }
 
     @Override
-    public List<ServicesDto> recomandation (int clientId) {
+    public List<ServicesDto> getRecomandation (int clientId) {
         Client client = clientRepository.findById(Client.class, clientId);
-        if (client == null)
+        if (client == null){
             throw new ClientNotFoundException(clientId);
+        }
         List <Appointment> appointment = appointmentRepository.findAllByClient(client);
         List <Services> services = new ArrayList<>();
-        if (appointment.isEmpty())
-        {
+        if (appointment.isEmpty()){
             List <Appointment> allAppointment = appointmentRepository.findAll();
             List <Integer> employeeServicesId = new ArrayList<>();
             for (int i = 0; i < allAppointment.size(); i++){
@@ -151,15 +159,17 @@ public class AppointmentServiceImpl implements AppointmentService{
         else {
             List <String> servicesName = new ArrayList<>();
             for (int i = 0; i < appointment.size(); i++) {
-                if (!services.contains(appointment.get(i).getEmployeeServices().getService()))
+                if (!services.contains(appointment.get(i).getEmployeeServices().getService())){
                     services.add(appointment.get(i).getEmployeeServices().getService());
+                }
                 servicesName.add(appointment.get(i).getEmployeeServices().getService().getName());
             }
             for (int i = 0; i < servicesName.size(); i++) {
                 List <Services> servicesByName = serviceRepository.findByName(servicesName.get(i));
                 for (int j = 0; j < servicesByName.size(); j++) {
-                    if (!services.contains(servicesByName.get(j)))
+                    if (!services.contains(servicesByName.get(j))){
                         services.add(servicesByName.get(j));
+                    }
                 }
             }
         }

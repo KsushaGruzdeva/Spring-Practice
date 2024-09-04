@@ -1,6 +1,5 @@
 package com.springpractice.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -11,38 +10,37 @@ import com.springpractice.dtos.ClientDto;
 import com.springpractice.dtos.CreateClientDto;
 import com.springpractice.entities.Client;
 import com.springpractice.exceptions.ClientNotFoundException;
-import com.springpractice.repositories.impl.ClientRepositoryImpl;
+import com.springpractice.repositories.ClientRepository;
 import com.springpractice.services.ClientService;
 
 @Service
 public class ClientServiceImpl implements ClientService{
-    private final ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
-    private ClientRepositoryImpl clientRepository;
+    private ModelMapper mapper;
 
     @Override
     public ClientDto findById(int id) {
         Client client = clientRepository.findById(Client.class, id);
-        if (client == null)
+        if (client == null){
             throw new ClientNotFoundException(id);
+        }
         return mapper.map(client, ClientDto.class);
     }
 
     @Override
-    public void create(CreateClientDto createClientDto) {
+    public ClientDto create(CreateClientDto createClientDto) {
         Client client = mapper.map(createClientDto, Client.class);
         System.out.println(client);
-        clientRepository.create(client);
+        // clientRepository.create(client);
+        return mapper.map(clientRepository.create(client), ClientDto.class);
     }
 
     @Override
     public List<ClientDto> findAll () {
-        List <Client> client = clientRepository.findAll();
-        List<ClientDto> clientDtos = new ArrayList<>();
-        for (int i = 0; i < client.size(); i++) {
-            clientDtos.add(mapper.map(client.get(i), ClientDto.class));
-        }
-        return clientDtos;
+        List <Client> allClients = clientRepository.findAll();
+        return allClients.stream().map(client -> mapper.map(client, ClientDto.class)).toList();
     }
 }

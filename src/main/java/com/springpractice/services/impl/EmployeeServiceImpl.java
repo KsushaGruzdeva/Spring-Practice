@@ -1,6 +1,5 @@
 package com.springpractice.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -11,37 +10,36 @@ import com.springpractice.dtos.CreateEmployeeDto;
 import com.springpractice.dtos.EmployeeDto;
 import com.springpractice.entities.Employee;
 import com.springpractice.exceptions.EmployeeNotFoundException;
-import com.springpractice.repositories.impl.EmployeeRepositoryImpl;
+import com.springpractice.repositories.EmployeeRepository;
 import com.springpractice.services.EmployeeService;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    private EmployeeRepositoryImpl employeeRepository;
+    private ModelMapper mapper;
 
     @Override
     public EmployeeDto findById(int id) {
         Employee employee = employeeRepository.findById(Employee.class, id);
-        if (employee == null)
+        if (employee == null){
             throw new EmployeeNotFoundException(id);
+        }
         return mapper.map(employee, EmployeeDto.class);
     }
 
     @Override
-    public void create(CreateEmployeeDto createEmployeeDto) {
+    public EmployeeDto create(CreateEmployeeDto createEmployeeDto) {
         Employee employee = mapper.map(createEmployeeDto, Employee.class);
-        employeeRepository.create(employee);
+        // employeeRepository.create(employee);
+        return mapper.map(employeeRepository.create(employee), EmployeeDto.class);
     }
 
     @Override
     public List <EmployeeDto> findAll () {
-        List <Employee> employee = employeeRepository.findAll();
-        List<EmployeeDto> employeesDtos = new ArrayList<>();
-        for (int i = 0; i < employee.size(); i++) {
-                employeesDtos.add(mapper.map(employee.get(i), EmployeeDto.class));
-            }
-        return employeesDtos;
+        List <Employee> allEmployees = employeeRepository.findAll();
+        return allEmployees.stream().map(employee -> mapper.map(employee, EmployeeDto.class)).toList();
     }
 }

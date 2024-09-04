@@ -16,15 +16,13 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Appointment extends BaseEntity {
     private Date date;
-    private Date time;
     private Client client;
     private EmployeeServices employeeServices;
 
     protected Appointment() {}
 
-    public Appointment (Date date, Date time, Client client, EmployeeServices employeeServices) {
+    public Appointment (Date date, Client client, EmployeeServices employeeServices) {
         this.date = date;
-        this.time = time;
         this.client = client;
         this.employeeServices = employeeServices;
     }
@@ -36,15 +34,6 @@ public class Appointment extends BaseEntity {
 
     public void setDate (Date date) {
         this.date = date;
-    }
-
-    @Column (name = "time")
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime (Date time) {
-        this.time = time;
     }
 
     @ManyToOne (fetch = FetchType.EAGER)
